@@ -1,0 +1,35 @@
+Consumidor
+CU01: Registrar usuario
+CU02: Modificar información
+CU03: Visualizar catalogo
+	CU04: Visualizar producto
+	CU05: Añadir producto a carrito
+CU06: Visualizar carrito de compras
+	CU07: Eliminar producto de carrito
+CU08: Realizar pedido
+CU09: Visualizar historial de pedidos
+	CU10: Ver detalle de pedido
+	CU11: Cancelar pedido
+CU12: Realizar reporte de incidente
+CU13: Reportar error
+CU14: Recuperar contraseña
+
+
+Ejecutivo
+CU15: Visualizar ventas totales
+CU16: Visualizar pedidos en validación
+	CU17: Asignar repartidor a pedido
+
+Repartidor
+CU18: Visualizar pedidos asignador
+	CU19: Cambiar estatus de pedido
+
+Administrador
+CU20: Registrar usuario
+CU21: Registrar sucursal
+CU22: Modificar sucursal
+CU23: Eliminar sucursal
+CU24: Registrar producto
+CU25: Registrar producto a sucursal
+CU26: Modificar producto
+CU27: Eliminar producto
