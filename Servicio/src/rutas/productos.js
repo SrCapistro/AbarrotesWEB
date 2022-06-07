@@ -93,4 +93,35 @@ router.put('/productos/actualizar', (req, res)=>{
 
 });
 
+
+//Agregar producto al carrito
+router.post('/agregarCarrito', async (req, res)=>{
+    const {idUsuario, idProducto, cantidad, total} = req.body
+    const producto = {
+        idUsuario, 
+        idProducto, 
+        cantidad, 
+        total
+    };
+    await mysqlConnection.query("INSERT INTO carrito set ?", [producto], (err, rows)=>{
+        if(!err){
+            res.json(rows.affectedRows)
+        }else{
+            console.log(err)
+        }
+    })
+})
+
+//Eliminar producto del carrito
+router.delete('/eliminarCarrito/:idUsuario/:idProducto', (req, res)=>{
+    const{idUsuario, idProducto} = req.params
+    
+    mysqlConnection.query('DELETE FROM carrito WHERE idUsuario = ? AND idProducto = ?', [idUsuario, idProducto], (err, rows)=>{
+        if(!err){
+            res.json(rows.affectedRows);
+        }else{
+            console.log(err);
+        }
+    })
+})
 module.exports = router;
