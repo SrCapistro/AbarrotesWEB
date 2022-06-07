@@ -7,6 +7,8 @@ app.use(express.json());
 
 app.use(require('./rutas/productos'))
 
+app.use('/usuario', require('./rutas/usuario'))
+
 
 app.listen(app.get('port'), () =>{
     console.log('Servidor en puerto ', app.get('port'))
