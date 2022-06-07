@@ -16,7 +16,7 @@ router.post("/registrarUsuario", async (req, res)=>{
     };
     await mysqlConnection.query("INSERT INTO usuario set ?", [nuevoUsuario], (err, rows)=>{
         if(!err){
-            res.send("Registro exitoso")
+            res.json(rows.affectedRows)
         }else{
             console.log(err)
         }
