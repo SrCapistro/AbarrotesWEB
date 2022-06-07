@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Iniciar sesión</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav id="menu" class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <a class="navbar-brand" href="#">
+              <img src="recursos/img/market-store-svgrepo-com.svg" alt="logo" width="40" height="34" class="d-inline-block align-text-top">
+              Abarratos
+          </a>
+          <div class="collapse navbar-collapse" id="navbarMenu">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#">Gestion Usuarios</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#">Gestion Sucursales</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#">Gestion Productos</a>
+                  </li>
+              </ul>
+              <ul class="navbar-nav me-1 mb-2 mb-lg-0 justify-content-end">
+                <li class="nav-item ">
+                  <p class="text-muted mt-2" id="nombreCompleto">
+                  </p>
+                </li>
+                <li class="nav-item ">
+                  <button type="button" class="btn btn-link" onclick="cerrarSesion()">Salir</button>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </nav> 
+    <br>
+    <br>
+    <div class="container">
+       
+        <!-- Se muestra mensaje de error -->
+        <div id="mosntrarMensaje">
+
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button id="btnRegistrarNuevoProducto" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#nuevoProducto" onclick="resetearModal()"> Producto Nuevo </button>
+        </div>
+
+        <table class="table" id="tablaProductos">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Estatus</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+    </div>
+
+  
+  <!-- Modal registrar producto nuevo-->
+  <div class="modal fade" id="nuevoProducto" tabindex="-1" aria-labelledby="nuevoProductoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="txtTituloModal" class="modal-title" >Registrar Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form name="formularioRegistrarProducto">
+                
+                <div class="mb-3 visually-hidden">
+                    <input type="number" class="form-control form-control-sm" id="txtIdProducto">
+                  </div>
+
+                <div class="mb-3">
+                  <label for="txtProducto" class="form-label">Producto</label>
+                  <input type="text" class="form-control form-control-sm" id="txtProducto">
+                </div>
+
+                <div class="mb-3">
+                  <label for="txtPrecio" class="form-label">Precio</label>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">$</span>
+                    <input type="number" class="form-control form-control-sm" id="txtPrecio" step="0.01">
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="txtCantidad" class="form-label">Cantidad</label>
+                  <input type="number" class="form-control form-control-sm" id="txtCantidad" step="1">
+                </div>
+
+                <div class="mb-3">
+                  <label for="selectCategoria" class="form-label">Categoria</label>
+                  <select class="form-select form-select-sm" id="selectCategoria">
+                  </select>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end"> 
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button id="btnRegistraProducto" type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="registrarProducto()">Registrar</button>
+                    <button id="btnModificarProducto" type="button" class="btn btn-primary visually-hidden" data-bs-dismiss="modal" onclick="guardarProductoModificado()">Actualizar</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+    <script type="text/javascript" src="logica/productos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  
+  </body>
+</html>

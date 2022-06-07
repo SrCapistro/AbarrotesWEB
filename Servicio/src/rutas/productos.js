@@ -40,8 +40,57 @@ router.get('/productos/categoria/:idCategoria', (req, res) =>{
     });
 });
 
+//REGISTRAR NUEVO PRODUCTO
+router.post('/productos/registrar', (req, res)=>{
 
+    let {nombre, precio, cantidad, idCategoria, estatus} = req.body;
 
+    mysqlConnection.query('INSERT INTO producto (`nombre`,`precio`,`cantidad`,`idCategoria`, `estatus`) VALUES (?, ?, ?, ?, ?);',[nombre, precio, cantidad, idCategoria, estatus], (err, rows, fields) =>{
+        if(!err){
+            res.json(rows.affectedRows);
+        }else{
+            console.log(err);
+        }
+    });
 
+});
+
+//OBTENER TODOS LOS PRODUCTOS CON CATEGORIA
+router.get('/productosCategorias', (req, res)=>{
+    mysqlConnection.query('SELECT * FROM producto P LEFT JOIN categoria C ON P.idCategoria = C.idCatego', (err, rows, fields) =>{
+        if(!err){
+            res.json(rows);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+//ELIMINAR UN PRODUCTO POR ID
+router.delete('/productos/eliminar/:idProducto', (req, res) =>{
+    const {idProducto} = req.params;
+    mysqlConnection.query('DELETE FROM producto WHERE idProducto = ?;', [idProducto], (err, rows, fields)=>{
+        if(!err){
+            res.json(rows.affectedRows);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+//ACTUALIZAR PRODUCTO
+router.put('/productos/actualizar', (req, res)=>{
+
+    let {idProducto, nombre, precio, cantidad, idCategoria, estatus} = req.body;
+    
+    mysqlConnection.query('UPDATE producto SET nombre = ?, precio = ?, cantidad = ?, idCategoria = ?, estatus = ? WHERE idProducto = ?;',[nombre, precio, cantidad, idCategoria, estatus, idProducto], (err, rows, fields) =>{
+        if(!err){
+            res.json(rows.affectedRows);
+        }else{
+            console.log(err);
+        }
+    });
+
+});
 
 module.exports = router;

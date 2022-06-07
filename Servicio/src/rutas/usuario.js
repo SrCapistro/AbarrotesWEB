@@ -23,4 +23,16 @@ router.post("/registrarUsuario", async (req, res)=>{
     })
 })
 
+//OBTENER DATOS DE USUARIO SESION
+router.get('/iniciarSesion/:correo/:contrasenia', (req, res) =>{
+    const {correo, contrasenia} = req.params;
+    mysqlConnection.query('SELECT * FROM usuario WHERE correo = ? AND contraseña = ?', [correo, contrasenia], (err, rows, fields)=>{
+        if(!err){
+            res.json(rows);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
 module.exports = router;
