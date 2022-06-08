@@ -22,14 +22,11 @@ function iniciarSesion(params) {
                                             '</div>';                      
             }else{
 
-                console.log(informacionUsuario[0]);
-
                 switch (informacionUsuario[0].tipo) {
-                    case "Consumidor":
-                    
-                            localStorage.setItem(informacionUsuario[0].idUsuario, JSON.stringify(informacionUsuario[0]));
-                            window.open('productos.html?idUsuario='+ informacionUsuario[0].idUsuario ,'_self');
-
+                    case "Cliente":
+                        localStorage.setItem('idUsuario',informacionUsuario[0].idUsuario);
+                        localStorage.setItem(informacionUsuario[0].idUsuario, JSON.stringify(informacionUsuario[0]));
+                        window.open('./vista_consumidor/productos.html?idUsuario='+ informacionUsuario[0].idUsuario ,'_self');
                         break;
                     case "Ejecutivo":
                         
@@ -38,7 +35,8 @@ function iniciarSesion(params) {
                         
                         break;
                     case "Administrador":
-                        
+                        localStorage.setItem(informacionUsuario[0].idUsuario, JSON.stringify(informacionUsuario[0]));
+                        window.open('productos.html?idUsuario='+ informacionUsuario[0].idUsuario ,'_self');
                         break;
                 
                     default:

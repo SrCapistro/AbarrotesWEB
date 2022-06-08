@@ -10,7 +10,7 @@ router.get('/productos', (req, res)=>{
         if(!err){
             res.json(rows);
         }else{
-            console.log(err);
+            res.send(err);
         }
     });
 });
