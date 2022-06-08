@@ -25,7 +25,7 @@ function iniciarSesion(params) {
                 console.log(informacionUsuario[0]);
 
                 switch (informacionUsuario[0].tipo) {
-                    case "Consumidor":
+                    case "Cliente":
                     
                             localStorage.setItem(informacionUsuario[0].idUsuario, JSON.stringify(informacionUsuario[0]));
                             window.open('productos.html?idUsuario='+ informacionUsuario[0].idUsuario ,'_self');
