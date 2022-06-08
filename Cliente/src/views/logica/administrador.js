@@ -14,7 +14,7 @@ function validarUsuario() {
 
         if (!usuario) {
             window.open('index.html','_self');
-        }else if(usuario.tipo === "Consumidor"){
+        }else if(usuario.tipo === "Cliente"){
             let mostrarMensaje = document.getElementById("nombreCompleto");
                 mostrarMensaje.innerHTML = usuario.nombreCompleto;
         }
