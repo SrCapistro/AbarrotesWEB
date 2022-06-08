@@ -30,6 +30,7 @@ function mostrarProducto(data){
 }
 
 function añadirCarrito(){
+   
     let cantidad = document.getElementById("txt_cantidad").value;
     if(cantidad){
         let agregarCarrito = {
