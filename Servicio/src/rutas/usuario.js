@@ -36,6 +36,18 @@ router.get('/iniciarSesion/:correo/:contrasenia', (req, res) =>{
     });
 });
 
+//OBTENER DATOS DE USUARIO SESION
+router.get('/obtenerUsuarios', (req, res) =>{
+    const {correo, contrasenia} = req.params;
+    mysqlConnection.query('SELECT * FROM usuario ', (err, rows, fields)=>{
+        if(!err){
+            res.json(rows);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
 //Metodo de recuperación de correo electrónico 
 router.post('/recovery', (req, res)=>{
     const correo = req.body.correo
