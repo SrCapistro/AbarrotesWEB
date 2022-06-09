@@ -1,5 +1,40 @@
 const URL = "http:/localhost:4000/";
 
+var usuario; 
+
+function validarUsuario() {
+
+    let miURL = document.location.href;
+    
+    if(miURL.indexOf('?') > 0) {
+        
+        let valorUser = miURL.split('?')[1];
+
+        let idUsuario = valorUser.split('=')[1];
+
+        usuario =  JSON.parse(localStorage.getItem(idUsuario));
+
+        if (!usuario) {
+            window.open('../index.html','_self');
+        }else if(usuario.tipo === "Cliente"){
+            let mostrarMensaje = document.getElementById("nombreCompleto");
+                mostrarMensaje.innerHTML = usuario.nombreCompleto;
+                var urlCarritoCompras = document.getElementById("carritoCompras");
+                urlCarritoCompras.href = "carritoCompras.html?idUsuario="+usuario.idUsuario;
+        }
+    }else{
+        window.open('../index.html','_self');
+    }
+}
+
+validarUsuario();
+
+function cerrarSesion(){
+    localStorage.removeItem(usuario.idUsuario);
+    setTimeout(() => {
+        window.open('../index.html','_self');
+    }, 1000);
+}
 
 function cargarProductos(){
     var xhttp = new XMLHttpRequest();
@@ -54,10 +89,6 @@ function mostrarCategorias(data){
 function verProducto(idProducto){
     //Brandon para acceder al ID del usuario nada más con el localStorage accedes.
     window.open('producto.html?idProducto='+idProducto ,'_self');
-}
-
-function cerrarSesion(){
-    alert("Cerrar sesión xd")
 }
 
 window.onload = function(){

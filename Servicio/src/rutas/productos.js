@@ -41,7 +41,7 @@ router.get('/productos/categoria/:idCategoria', (req, res) =>{
 });
 
 //REGISTRAR NUEVO PRODUCTO
-router.post('/productos/registrar', (req, res)=>{
+router.post('/registrar', (req, res)=>{
 
     let {nombre, precio, cantidad, idCategoria, estatus} = req.body;
 
@@ -67,7 +67,7 @@ router.get('/productosCategorias', (req, res)=>{
 });
 
 //ELIMINAR UN PRODUCTO POR ID
-router.delete('/productos/eliminar/:idProducto', (req, res) =>{
+router.delete('/eliminar/:idProducto', (req, res) =>{
     const {idProducto} = req.params;
     mysqlConnection.query('DELETE FROM producto WHERE idProducto = ?;', [idProducto], (err, rows, fields)=>{
         if(!err){
@@ -79,7 +79,7 @@ router.delete('/productos/eliminar/:idProducto', (req, res) =>{
 });
 
 //ACTUALIZAR PRODUCTO
-router.put('/productos/actualizar', (req, res)=>{
+router.put('/actualizar', (req, res)=>{
 
     let {idProducto, nombre, precio, cantidad, idCategoria, estatus} = req.body;
     
@@ -124,4 +124,30 @@ router.delete('/eliminarCarrito/:idUsuario/:idProducto', (req, res)=>{
         }
     })
 })
+
+//Eliminar producto del carrito
+router.delete('/eliminarCarrito/:idCarrito', (req, res)=>{
+    const{idCarrito} = req.params
+    
+    mysqlConnection.query('DELETE FROM carrito WHERE idCarrito = ?', [idCarrito], (err, rows)=>{
+        if(!err){
+            res.json(rows.affectedRows);
+        }else{
+            console.log(err);
+        }
+    })
+})
+
+//OBTENER TODOS LOS PRODUCTOS DE UN CARRITO
+router.get('/obtenerCarrito/:idUsuario', (req, res)=>{
+    const{idUsuario} = req.params
+    mysqlConnection.query('SELECT C.idCarrito, C.idUsuario, C.idProducto, C.cantidad as cantidad, C.total, P.nombre, P.precio, P.cantidad as Existencia  FROM carrito C LEFT JOIN producto P ON C.idProducto = P.idProducto WHERE C.idUsuario = ?',[idUsuario], (err, rows, fields) =>{
+        if(!err){
+            res.json(rows);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
 module.exports = router;

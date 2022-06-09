@@ -15,7 +15,7 @@ function validarUsuario() {
 
         if (!usuario) {
             window.open('index.html','_self');
-        }else if(usuario.tipo === "Cliente"){
+        }else if(usuario.tipo === "Administrador"){
             let mostrarMensaje = document.getElementById("nombreCompleto");
                 mostrarMensaje.innerHTML = usuario.nombreCompleto;
         }
@@ -37,7 +37,7 @@ function cargarProductos() {
 
     var request = new XMLHttpRequest();
 
-    request.open('GET', "http://localhost:4000/productosCategorias", true);
+    request.open('GET', "http://localhost:4000/productos/productosCategorias", true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {

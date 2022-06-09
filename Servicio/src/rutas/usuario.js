@@ -35,4 +35,16 @@ router.get('/iniciarSesion/:correo/:contrasenia', (req, res) =>{
     });
 });
 
+//OBTENER DATOS DE USUARIO SESION
+router.get('/obtenerUsuarios', (req, res) =>{
+    const {correo, contrasenia} = req.params;
+    mysqlConnection.query('SELECT * FROM usuario', [correo, contrasenia], (err, rows, fields)=>{
+        if(!err){
+            res.json(rows);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
 module.exports = router;
