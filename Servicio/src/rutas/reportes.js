@@ -6,9 +6,9 @@ const mysqlConnection = require('../bd');
 //REGISTRAR REPORTE INCIDENTE
 router.post('/registrar', (req, res)=>{
 
-    let {comentarios, tipo} = req.body;
+    let {comentarios, tipo, idUsuario} = req.body;
 
-    mysqlConnection.query('INSERT INTO reporte (`comentarios`,`tipo`) VALUES (?, ?);',[comentarios, tipo], (err, rows, fields) =>{
+    mysqlConnection.query('INSERT INTO reporte (`comentarios`,`tipo`, `idUsuario`) VALUES (?, ?, ?);',[comentarios, tipo, idUsuario], (err, rows, fields) =>{
         if(!err){
             res.json(rows.affectedRows);
         }else{
