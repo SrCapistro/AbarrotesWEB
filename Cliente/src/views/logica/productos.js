@@ -37,7 +37,7 @@ function cargarProductos() {
 
     var request = new XMLHttpRequest();
 
-    request.open('GET', "http://localhost:4000/productos/productosCategorias", true);
+    request.open('GET', "http://localhost:4000/productosCategorias", true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
@@ -167,7 +167,7 @@ function registrarProducto() {
 
     var request = new XMLHttpRequest();
 
-    request.open('POST', "http://localhost:4000/productos/registrar", true);
+    request.open('POST', "http://localhost:4000/registrar", true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
@@ -201,7 +201,7 @@ function eliminarProducto(idProducto) {
     
     var request = new XMLHttpRequest();
 
-    request.open('DELETE', "http://localhost:4000/productos/eliminar/"+idProducto, true);
+    request.open('DELETE', "http://localhost:4000/eliminar/"+idProducto, true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
@@ -292,7 +292,7 @@ function guardarProductoModificado() {
 
     var request = new XMLHttpRequest();
 
-    request.open('PUT', "http://localhost:4000/productos/actualizar", true);
+    request.open('PUT', "http://localhost:4000/actualizar", true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
