@@ -30,7 +30,6 @@ function mostrarProducto(data){
 }
 
 function añadirCarrito(){
-   
     let cantidad = document.getElementById("txt_cantidad").value;
     if(cantidad){
         let agregarCarrito = {
@@ -41,7 +40,7 @@ function añadirCarrito(){
         }
 
         var request = new XMLHttpRequest();
-        request.open('POST', 'http://localhost:4000/productos/agregarCarrito', true);
+        request.open('POST', URL+'productos/agregarCarrito', true);
         request.setRequestHeader('Content-Type', 'application/json');
         request.onload = function(){
             

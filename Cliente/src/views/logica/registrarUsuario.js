@@ -21,10 +21,14 @@ function registrar(){
     request.onload = function(){
         if(this.response == 1){
             alert("Usuario registrado con exito");
+            window.open('../views/index.html', '_self')
         }else{
             alert("No fue posible realizar el registro");
         }
     }
     request.send(JSON.stringify(nuevoUsuario));
     return false
+}
+function cancelar(){
+    window.open('../views/index.html', '_self')
 }
