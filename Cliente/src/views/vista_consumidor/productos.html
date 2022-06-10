@@ -85,10 +85,19 @@
                   <label for="txtComentarios" class="form-label">Comentarios</label>
                   <textarea class="form-control" id="txtComentarios" rows="5"></textarea>
                 </div>
+
+                <div class="mb-3">
+                  <label for="txtComentarios" class="form-label">Ingrese una fotografía para respaldar su incidente</label>
+                </div>
                 
                 <div class="mb-3">
-                  <label for="imgIncidente" class="form-label">Ingrese una fotografía para respaldar su incidente</label>
-                  <input class="form-control" type="file" id="imgIncidente">
+                  <div class="text-center">
+                    <img id="imagenReporteVista" class="visually-hidden" style="width: 150px;" alt="Imagen No Encontrada">
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <input class="form-control form-control-sm" id="txtImagenReporte" type="file" accept="image/*" onchange="visualizarImagenReporte()">
                 </div>
 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end"> 
