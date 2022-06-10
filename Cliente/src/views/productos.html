@@ -56,6 +56,7 @@
         <table class="table" id="tablaProductos">
             <thead>
               <tr>
+                <th scope="col">Producto</th>
                 <th scope="col">ID</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Precio</th>
@@ -85,7 +86,17 @@
                 
                 <div class="mb-3 visually-hidden">
                     <input type="number" class="form-control form-control-sm" id="txtIdProducto">
+                </div>
+
+                <div class="mb-3">
+                  <div class="text-center">
+                    <img id="imageProductoVista" class="visually-hidden" style="width: 150px;" alt="Imagen No Encontrada">
                   </div>
+                </div>
+                
+                <div class="mb-3">
+                  <input class="form-control form-control-sm" id="txtImagenProducto" type="file" accept="image/*" onchange="visualizarImagen()">
+                </div>
 
                 <div class="mb-3">
                   <label for="txtProducto" class="form-label">Producto</label>
@@ -112,7 +123,7 @@
                 </div>
                 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end"> 
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetearModal()">Cancelar</button>
                     <button id="btnRegistraProducto" type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="registrarProducto()">Registrar</button>
                     <button id="btnModificarProducto" type="button" class="btn btn-primary visually-hidden" data-bs-dismiss="modal" onclick="guardarProductoModificado()">Actualizar</button>
                 </div>

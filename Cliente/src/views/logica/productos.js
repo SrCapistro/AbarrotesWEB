@@ -44,6 +44,8 @@ function cargarProductos() {
             let productos = JSON.parse(this.response);
             listaProductos = productos;
 
+            console.log(listaProductos);
+
             let tbodyRef = document.getElementById('tablaProductos').getElementsByTagName('tbody')[0];
             
             tbodyRef.innerHTML= "";
@@ -54,6 +56,7 @@ function cargarProductos() {
 
                     let nuevaFila = tbodyRef.insertRow();
 
+                    let cellImg = nuevaFila.insertCell();
                     let cellIdProducto = nuevaFila.insertCell();
                     let cellNombre = nuevaFila.insertCell();
                     let cellPrecio = nuevaFila.insertCell();
@@ -86,7 +89,6 @@ function cargarProductos() {
                     btnEliminar.setAttribute("onclick","eliminarProducto(this.value)");
                     btnEliminar.innerText = "Eliminar";
 
-
                     cellIdProducto.appendChild(idProducto);
                     cellNombre.appendChild(nombre);
                     cellPrecio.appendChild(precio);
@@ -96,6 +98,19 @@ function cargarProductos() {
                     cellModificar.appendChild(btnModificar);
                     cellEliminar.appendChild(btnEliminar);
 
+                    if(productos[key].ruta){
+                        let inputImg = document.createElement("img");
+                        inputImg.setAttribute("style","width: 80px;");
+                        inputImg.setAttribute("alt","imgproducto");
+                        inputImg.setAttribute("src","http://localhost:4000/imagenesProductos/"+productos[key].ruta);
+
+                        let contenedorIMG = document.createElement("div");
+                        contenedorIMG.setAttribute("class","text-center");
+
+                        contenedorIMG.appendChild(inputImg);
+
+                        cellImg.appendChild(contenedorIMG);
+                    }
                 }
             }       
         }
@@ -116,6 +131,7 @@ function cargarComboCategoria() {
         if (request.status >= 200 && request.status < 300) {
             let categorias = JSON.parse(this.response);
 
+
             for (var key in categorias) {
 
                 if(categorias.hasOwnProperty(key)){
@@ -131,29 +147,32 @@ function cargarComboCategoria() {
 cargarComboCategoria();
 
 function registrarProducto() {
+
     let formularioIniciarSesion = document.forms.formularioRegistrarProducto;
 
+    let imageProductoVista = formularioIniciarSesion.txtImagenProducto.files[0];
     let txtProducto = formularioIniciarSesion.txtProducto.value;
     let txtPrecio = formularioIniciarSesion.txtPrecio.value;
     let txtCantidad = formularioIniciarSesion.txtCantidad.value;
     let selectCategoria = formularioIniciarSesion.selectCategoria.value;
 
-    let producto = {
-        nombre:txtProducto,
-        precio: txtPrecio,
-        cantidad: txtCantidad,
-        idCategoria: selectCategoria,
-        estatus: txtCantidad == "0" ? 0 : 1
-    }
+    var producto = new FormData();
+
+    producto.append("nombre", txtProducto);
+    producto.append("precio", txtPrecio);
+    producto.append("cantidad", txtCantidad);
+    producto.append("idCategoria", selectCategoria);
+    producto.append("estatus", txtCantidad == "0" ? 0 : 1);
+    producto.append("imagen", imageProductoVista);
 
     var request = new XMLHttpRequest();
 
     request.open('POST', "http://localhost:4000/productos/registrar", true);
 
-    request.setRequestHeader('Content-Type', 'application/json');
-
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
+
+            console.log(this.response);
             
             let mostrarMensaje = document.getElementById("mosntrarMensaje");
 
@@ -163,11 +182,7 @@ function registrarProducto() {
                                                 '<strong id="mensajeAlerta"> Se registro el Producto</strong>' +
                                                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
                                             '</div>';
-
-                formularioIniciarSesion.txtProducto.value = "";
-                formularioIniciarSesion.txtPrecio.value = "";
-                formularioIniciarSesion.txtCantidad.value = "";
-
+                resetearModal();
                 cargarProductos();
 
             }else{
@@ -179,7 +194,7 @@ function registrarProducto() {
         }
     }
 
-    request.send(JSON.stringify(producto));
+    request.send(producto);
 }
 
 function eliminarProducto(idProducto) {
@@ -234,12 +249,19 @@ function modificarProducto(idProducto) {
         if(listaProductos.hasOwnProperty(key)){
 
             if(listaProductos[key].idProducto == idProducto){
-                
+
+                if(listaProductos[key].ruta){
+                    const imageProductoVista = document.getElementById("imageProductoVista");
+                    imageProductoVista.setAttribute("class","img-fluid");
+
+                    imageProductoVista.src = "http://localhost:4000/imagenesProductos/"+listaProductos[key].ruta;
+                }
+
                 formularioIniciarSesion.txtIdProducto.value = listaProductos[key].idProducto;
                 formularioIniciarSesion.txtProducto.value = listaProductos[key].nombre;
                 formularioIniciarSesion.txtPrecio.value = listaProductos[key].precio;
                 formularioIniciarSesion.txtCantidad.value = listaProductos[key].cantidad;
-                formularioIniciarSesion.selectCategoria.value = listaProductos[key].idCatego;
+                formularioIniciarSesion.selectCategoria.value = listaProductos[key].idCategoria;
 
                 return;
             }
@@ -252,25 +274,25 @@ function guardarProductoModificado() {
     let formularioIniciarSesion = document.forms.formularioRegistrarProducto;
     
     let txtIdProducto = formularioIniciarSesion.txtIdProducto.value;
+    let imageProductoVista = formularioIniciarSesion.txtImagenProducto.files[0];
     let txtProducto = formularioIniciarSesion.txtProducto.value;
     let txtPrecio = formularioIniciarSesion.txtPrecio.value;
     let txtCantidad = formularioIniciarSesion.txtCantidad.value;
     let selectCategoria = formularioIniciarSesion.selectCategoria.value;
 
-    let producto = {
-        idProducto:txtIdProducto,
-        nombre:txtProducto,
-        precio: txtPrecio,
-        cantidad: txtCantidad,
-        idCategoria: selectCategoria,
-        estatus: txtCantidad == "0" ? 0 : 1
-    }
+    var producto = new FormData();
+
+    producto.append("idProducto", txtIdProducto);
+    producto.append("nombre", txtProducto);
+    producto.append("precio", txtPrecio);
+    producto.append("cantidad", txtCantidad);
+    producto.append("idCategoria", selectCategoria);
+    producto.append("estatus", txtCantidad == "0" ? 0 : 1);
+    producto.append("imagen", imageProductoVista);
 
     var request = new XMLHttpRequest();
 
     request.open('PUT', "http://localhost:4000/productos/actualizar", true);
-
-    request.setRequestHeader('Content-Type', 'application/json');
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
@@ -285,10 +307,7 @@ function guardarProductoModificado() {
                                                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
                                             '</div>';
                 
-                formularioIniciarSesion.txtIdProducto.value = "";
-                formularioIniciarSesion.txtProducto.value = "";
-                formularioIniciarSesion.txtPrecio.value = "";
-                formularioIniciarSesion.txtCantidad.value = "";
+                resetearModal();
 
                 cargarProductos();
 
@@ -301,8 +320,7 @@ function guardarProductoModificado() {
         }
     }
 
-    request.send(JSON.stringify(producto));
-
+    request.send(producto);
 
 }
 
@@ -315,4 +333,43 @@ function resetearModal() {
 
     let btnModificar = document.getElementById("btnModificarProducto");
     btnModificar.setAttribute("class", "btn btn-primary visually-hidden");
+
+    let formularioRegistrarProducto = document.forms.formularioRegistrarProducto;
+    formularioRegistrarProducto.reset();    
+
+    const imageProductoVista = document.getElementById("imageProductoVista");
+    
+    imageProductoVista.setAttribute("class","visually-hidden");
+}
+
+function visualizarImagen() {
+
+    const txtImagenProducto = document.getElementById("txtImagenProducto");
+    const imageProductoVista = document.getElementById("imageProductoVista");
+    
+    imageProductoVista.setAttribute("class","img-fluid");
+
+    if (txtImagenProducto.files != 0) {
+        
+        const tipoImagen = [
+            "image/apng",
+            "image/bmp",
+            "image/gif",
+            "image/jpeg",
+            "image/pjpeg",
+            "image/png",
+            "image/svg+xml",
+            "image/tiff",
+            "image/webp",
+            "image/x-icon"
+        ];
+
+        for(const imagen of txtImagenProducto.files) {
+
+            if(tipoImagen.includes(imagen.type)){
+                imageProductoVista.src = URL.createObjectURL(imagen);
+            }
+        }
+    }
+
 }

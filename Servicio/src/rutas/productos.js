@@ -1,4 +1,6 @@
 const express = require('express');
+const multer = require('multer');
+const mimeTypes = require('mime-types');
 const router = express.Router();
 
 const mysqlConnection = require('../bd');
@@ -40,24 +42,54 @@ router.get('/productos/categoria/:idCategoria', (req, res) =>{
     });
 });
 
+// REGISTRA LA IMAGEN EN EL SERVIDOR
+const storage = multer.diskStorage({
+    
+    destination: './img-productos',
+
+    filename: function(req, file, cb){
+
+        var {nombre, precio, cantidad, idCategoria, estatus} = req.body;
+
+        var fileName = Date.now()+ "." + mimeTypes.extension(file.mimetype)
+      
+        cb("", fileName);
+        
+        mysqlConnection.query('INSERT INTO producto (`nombre`,`precio`,`cantidad`,`idCategoria`, `estatus`) VALUES (?, ?, ?, ?, ?);',[nombre, precio, cantidad, idCategoria, estatus], (err, rows, fields) =>{
+            if(!err){
+                
+                if(rows.insertId){
+                    mysqlConnection.query('INSERT INTO `archivo` (`ruta`, `idProducto`) VALUES (?, ?);',[ fileName ,rows.insertId], (err, rows, fields) =>{
+                        if(err){
+                            console.log(err);
+                        }
+                    });
+                }
+            }else{
+                console.log(err);
+            }
+        });
+    }
+  })
+
+  const upload = multer({
+    storage: storage
+  }).single('imagen');
+  
 //REGISTRAR NUEVO PRODUCTO
 router.post('/registrar', (req, res)=>{
-
-    let {nombre, precio, cantidad, idCategoria, estatus} = req.body;
-
-    mysqlConnection.query('INSERT INTO producto (`nombre`,`precio`,`cantidad`,`idCategoria`, `estatus`) VALUES (?, ?, ?, ?, ?);',[nombre, precio, cantidad, idCategoria, estatus], (err, rows, fields) =>{
-        if(!err){
-            res.json(rows.affectedRows);
+    upload(req, res, function (error) {
+        if (error) {
+            res.json(error);
         }else{
-            console.log(err);
+            res.json(1);
         }
     });
-
 });
 
-//OBTENER TODOS LOS PRODUCTOS CON CATEGORIA
+// OBTENER TODOS LOS PRODUCTOS CON CATEGORIA
 router.get('/productosCategorias', (req, res)=>{
-    mysqlConnection.query('SELECT * FROM producto P LEFT JOIN categoria C ON P.idCategoria = C.idCatego', (err, rows, fields) =>{
+    mysqlConnection.query('SELECT P.idProducto, P.nombre, P.precio, P.cantidad, P.idCategoria, P.estatus, C.nombreCatego, A.idArchivo, A.ruta FROM producto P LEFT JOIN categoria C ON P.idCategoria = C.idCatego LEFT JOIN archivo A ON P.idProducto = A.idProducto', (err, rows, fields) =>{
         if(!err){
             res.json(rows);
         }else{
@@ -73,16 +105,65 @@ router.delete('/eliminar/:idProducto', (req, res) =>{
         if(!err){
             res.json(rows.affectedRows);
         }else{
+            res.json(rows);
             console.log(err);
         }
     });
 });
 
+// REGISTRA LA IMAGEN EN EL SERVIDOR
+const storageUpdate = multer.diskStorage({
+    
+    destination: './img-productos',
+
+    filename: function(req, file, cb){
+
+        let {idProducto, nombre, precio, cantidad, idCategoria, estatus} = req.body;
+
+        var fileName = Date.now()+ "." + mimeTypes.extension(file.mimetype)
+      
+        cb("", fileName);
+
+        
+
+        mysqlConnection.query('UPDATE producto SET nombre = ?, precio = ?, cantidad = ?, idCategoria = ?, estatus = ? WHERE idProducto = ?;',[nombre, precio, cantidad, idCategoria, estatus, idProducto], (err, rows, fields) =>{
+            if(err){
+                console.log(err);
+            }
+        });
+
+        mysqlConnection.query('SELECT COUNT(*) as cantidad FROM archivo  WHERE idProducto = ?',[idProducto], (err, rows, fields) =>{
+            if(!err){
+
+                if(rows[0].cantidad > 0){
+                    mysqlConnection.query('UPDATE `archivo` SET `ruta` = ? WHERE `idProducto` = ?;',[ fileName ,idProducto], (err, rows, fields) =>{
+                        if(err){
+                            console.log(err);
+                        }
+                    });
+                }else{
+                    mysqlConnection.query('INSERT INTO `archivo` (`ruta`, `idProducto`) VALUES (?, ?);',[ fileName ,idProducto], (err, rows, fields) =>{
+                        if(err){
+                            console.log(err);
+                        }
+                    });
+                }
+            }else{
+                console.log(err);
+            }
+        });
+    }
+  })
+
+const uploadUpdate = multer({
+    storage: storageUpdate
+});
+  
 //ACTUALIZAR PRODUCTO
-router.put('/actualizar', (req, res)=>{
+router.put('/actualizar', uploadUpdate.single('imagen'), (req, res)=>{
 
     let {idProducto, nombre, precio, cantidad, idCategoria, estatus} = req.body;
-    
+
     mysqlConnection.query('UPDATE producto SET nombre = ?, precio = ?, cantidad = ?, idCategoria = ?, estatus = ? WHERE idProducto = ?;',[nombre, precio, cantidad, idCategoria, estatus, idProducto], (err, rows, fields) =>{
         if(!err){
             res.json(rows.affectedRows);
@@ -90,9 +171,7 @@ router.put('/actualizar', (req, res)=>{
             console.log(err);
         }
     });
-
 });
-
 
 //Agregar producto al carrito
 router.post('/agregarCarrito', async (req, res)=>{
@@ -129,9 +208,34 @@ router.delete('/eliminarCarrito/:idUsuario/:idProducto', (req, res)=>{
 router.delete('/eliminarCarrito/:idCarrito', (req, res)=>{
     const{idCarrito} = req.params
     
-    mysqlConnection.query('DELETE FROM carrito WHERE idCarrito = ?', [idCarrito], (err, rows)=>{
+    mysqlConnection.query('SELECT cantidad, idProducto FROM carrito WHERE idCarrito = ?', [idCarrito], (err, rows)=>{
         if(!err){
-            res.json(rows.affectedRows);
+
+            var{cantidad, idProducto} = rows[0];
+
+            mysqlConnection.query('SELECT cantidad FROM producto WHERE idProducto = ?',[idProducto], (err, rows)=>{
+                if(!err){
+
+                    let sumaProductos =  cantidad + rows[0].cantidad;
+                    let estatus = sumaProductos > 0 ? 1:0;
+
+                    mysqlConnection.query('UPDATE producto SET  cantidad = ?, estatus = ? WHERE idProducto = ?;',[sumaProductos, estatus, idProducto ], (err, rows, fields) =>{
+                        if(!err){
+                            mysqlConnection.query('DELETE FROM carrito WHERE idCarrito = ?', [idCarrito], (err, rows)=>{
+                                if(!err){
+                                    res.json(rows.affectedRows);
+                                }else{
+                                    console.log(err);
+                                }
+                            })
+                        }else{
+                            console.log(err);
+                        }
+                    });
+                }else{
+                    console.log(err);
+                }
+            })
         }else{
             console.log(err);
         }
