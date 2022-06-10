@@ -1,26 +1,10 @@
-/*
-//Registrar reporte
-router.post("/registrar", async (req, res)=>{
-    const {nombreCompleto, estatus, tipo, contraseña, correo, telefono} = req.body
-    const nuevoUsuario = {
-        nombreCompleto, 
-        estatus, 
-        tipo, 
-        contraseña, 
-        correo, 
-        telefono
-    };
-    await mysqlConnection.query("INSERT INTO usuario set ?", [nuevoUsuario], (err, rows)=>{
-        if(!err){
-            res.json(rows.affectedRows)
-        }else{
-            console.log(err)
-        }
-    })
-})*/
+const express = require('express');
+const router = express.Router();
 
-//REGISTRAR NUEVO PRODUCTO
-router.post('/reportes/registrar', (req, res)=>{
+const mysqlConnection = require('../bd');
+
+//REGISTRAR REPORTE INCIDENTE
+router.post('/registrar', (req, res)=>{
 
     let {comentarios, tipo} = req.body;
 
@@ -33,3 +17,5 @@ router.post('/reportes/registrar', (req, res)=>{
     });
 
 });
+
+module.exports = router;

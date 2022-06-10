@@ -6,10 +6,9 @@ function registrarReporte() {
     let txtComentarios =formularioRegistrarReporte.txtComentarios.value;
     //espacio para fotografia
 
-
     let reporte = {
-        comentarios: txtComentarios,
-        tipo: txtAsunto
+        comentarios:txtComentarios,
+        tipo:txtAsunto
     }
 
     var request = new XMLHttpRequest();
@@ -24,20 +23,9 @@ function registrarReporte() {
             let mostrarMensaje = document.getElementById("mostrarMensaje");
 
             if(this.response == 1){
-                
-                mostrarMensaje.innerHTML =  '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
-                                                '<strong id="mensajeAlerta"> Se registro el Producto</strong>' +
-                                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                                            '</div>';
-
-                formularioRegistrarReporte.txtAsunto.value = "";
-                formularioRegistrarReporte.txtComentarios.value = "";
-
+                alert("Reporte enviado exitosamente");
             }else{
-                mostrarMensaje.innerHTML =  '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-                                                '<strong id="mensajeAlerta"> No se pudo registrar el producto</strong>' +
-                                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                                            '</div>';
+                alert("Error al enviar el reporte");
             }
         }
     }
