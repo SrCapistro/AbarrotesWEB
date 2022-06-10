@@ -1,4 +1,8 @@
 
+const URL = "http:/localhost:4000/";
+var params = window.location.search.substring(1);
+var idUsuario = localStorage.getItem('idUsuario');
+
 function registrarReporte() {
     let formularioRegistrarReporte = document.forms.formularioRegistrarReporte;
 
@@ -8,7 +12,8 @@ function registrarReporte() {
 
     let reporte = {
         comentarios:txtComentarios,
-        tipo:txtAsunto
+        tipo:txtAsunto,
+        idUsuario:idUsuario
     }
 
     var request = new XMLHttpRequest();
@@ -27,6 +32,10 @@ function registrarReporte() {
             }else{
                 alert("Error al enviar el reporte");
             }
+
+            formularioRegistrarReporte.txtAsunto.value = "";
+            formularioRegistrarReporte.txtComentarios.value ="";
+
         }
     }
 
