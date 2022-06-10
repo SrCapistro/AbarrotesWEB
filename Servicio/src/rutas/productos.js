@@ -254,4 +254,16 @@ router.get('/obtenerCarrito/:idUsuario', (req, res)=>{
     });
 });
 
+//Actualizar cantidad total de productos restante
+router.put('/restarProductos', (req, res)=>{
+    let {cantidad, idProducto} = req.body
+    mysqlConnection.query("UPDATE producto set cantidad = (select (cantidad - ?)) where idProducto = ?", [cantidad, idProducto], (err, rows)=>{
+        if(!err){
+            res.json(rows.affectedRows);
+        }else{
+            console.log(err);
+        }
+    })
+})
+
 module.exports = router;

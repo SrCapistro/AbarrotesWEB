@@ -37,7 +37,7 @@ function cargarProductos() {
 
     var request = new XMLHttpRequest();
 
-    request.open('GET', "http://localhost:4000/productos/obtenerCarrito/" + usuario.idUsuario, true);
+    request.open('GET', "http://localhost:4000/obtenerCarrito/" + usuario.idUsuario, true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
@@ -121,7 +121,7 @@ function eliminarProducto(idCarrito) {
 
     var request = new XMLHttpRequest();
 
-    request.open('DELETE', "http://localhost:4000/productos/eliminarCarrito/"+idCarrito, true);
+    request.open('DELETE', "http://localhost:4000/eliminarCarrito/"+idCarrito, true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {

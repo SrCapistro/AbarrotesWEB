@@ -1,4 +1,4 @@
-const URL = "http:/localhost:4000/";
+const URLHost = "http:/localhost:4000/";
 
 var usuario; 
 
@@ -44,7 +44,7 @@ function cargarProductos(){
         mostrarProductos(data);
     }
     };
-    xhttp.open("GET", URL+"productos", true);
+    xhttp.open("GET", URLHost+"productos", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
 }
@@ -74,7 +74,7 @@ function cargarCategorias(){
         mostrarCategorias(data);
     }
     };
-    xhttp.open("GET", URL+"obtenerCategorias", true);
+    xhttp.open("GET", URLHost+"obtenerCategorias", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
 }
