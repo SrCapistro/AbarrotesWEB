@@ -31,13 +31,22 @@ function registrarReporte() {
                 alert("Error al enviar el reporte");
             }
 
-            formularioRegistrarReporte.txtAsunto.value = "";
-            formularioRegistrarReporte.txtComentarios.value ="";
+            restablecerModal();
 
         }
     }
 
     request.send(reporte);
+}
+
+function restablecerModal(){
+
+    let formularioRegistrarReporte = document.forms.formularioRegistrarReporte;
+    formularioRegistrarReporte.reset();  
+
+    const imagenReporteVista = document.getElementById("imagenReporteVista");
+
+    imagenReporteVista.setAttribute("class","visually-hidden");
 }
 
 function visualizarImagenReporte() {
