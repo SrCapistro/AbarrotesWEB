@@ -1,5 +1,4 @@
 
-//const URL = "http:/localhost:4000/";
 var params = window.location.search.substring(1);
 var idUsuario = localStorage.getItem('idUsuario');
 
@@ -9,25 +8,17 @@ function registrarReporte() {
     let txtAsunto = formularioRegistrarReporte.txtAsunto.value;
     let txtComentarios =formularioRegistrarReporte.txtComentarios.value;
     let imagenReporteVista = formularioRegistrarReporte.txtImagenReporte.files[0];
-    /*
-    let reporte = {
-        comentarios:txtComentarios,
-        tipo:txtAsunto,
-        idUsuario:idUsuario
-    }*/
 
     var reporte = new FormData();
 
     reporte.append("comentarios", txtComentarios);
-    producto.append("tipo", txtAsunto);
-    producto.append("idUsuario", idUsuario);
-    producto.append("imagen", imagenReporteVista);
+    reporte.append("tipo", txtAsunto);
+    reporte.append("idUsuario", idUsuario);
+    reporte.append("imagen", imagenReporteVista);
 
     var request = new XMLHttpRequest();
 
     request.open('POST', "http://localhost:4000/reportes/registrar", true);
-
-    request.setRequestHeader('Content-Type', 'application/json');
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
@@ -46,7 +37,7 @@ function registrarReporte() {
         }
     }
 
-    request.send(JSON.stringify(reporte));
+    request.send(reporte);
 }
 
 function visualizarImagenReporte() {
