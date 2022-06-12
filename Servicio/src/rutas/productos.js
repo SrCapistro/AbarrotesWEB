@@ -20,7 +20,7 @@ router.get('/productos', (req, res)=>{
 //OBTENER UN PRODUCTO POR ID
 router.get('/productos/:idProducto', (req, res) =>{
     const {idProducto} = req.params;
-    mysqlConnection.query('SELECT * FROM producto p where p.idProducto = ?', [idProducto], (err, rows, fields)=>{
+    mysqlConnection.query('SELECT * FROM producto p LEFT JOIN archivo a ON p.idProducto = a.idProducto LEFT JOIN categoria c ON p.idCategoria = c.idCatego where p.idProducto = ?', [idProducto], (err, rows, fields)=>{
         if(!err){
             res.json(rows);
         }else{
@@ -34,6 +34,19 @@ router.get('/productos/categoria/:idCategoria', (req, res) =>{
     const {idCategoria} = req.params;
     mysqlConnection.query('SELECT p.idProducto, p.nombre, p.precio, p.cantidad, p.idCategoria,'+
     'c.nombreCatego from producto p join categoria c on c.idCatego = p.idCategoria and c.idCatego = ?', [idCategoria], (err, rows, fields)=>{
+        if(!err){
+            res.json(rows);
+        }else{
+            console.log(err);
+        }
+    });
+});
+
+//OBTENER POR CATEGORIA CON IMAGEN
+router.get('/productos/categoriaImagen/:idCategoria', (req, res) =>{
+    const {idCategoria} = req.params;
+    
+    mysqlConnection.query('SELECT P.idProducto, P.cantidad, P.idCategoria, P.nombre, P.precio, A.ruta FROM producto P LEFT JOIN categoria C ON P.idCategoria = C.idCatego LEFT JOIN archivo A ON P.idProducto = A.idProducto WHERE P.estatus = 1 AND P.idCategoria = ?', [idCategoria], (err, rows, fields)=>{
         if(!err){
             res.json(rows);
         }else{
@@ -265,5 +278,67 @@ router.put('/restarProductos', (req, res)=>{
         }
     })
 })
+
+//ACTUALIZAR PRODUCTO DE CARRITO Y PRODUCTO
+router.put('/carrito/producto/actualizar', (req, res)=>{
+    
+    var {idCarrito, idProducto, sumarCarrito, cantidad, cantidadActual, total} = req.body;
+
+    mysqlConnection.query('SELECT cantidad FROM producto WHERE idProducto = ?',[idProducto], (err, rows)=>{
+        if(!err){
+
+            if (sumarCarrito) {
+                if(cantidad > rows[0].cantidad){
+                    res.json(rows[0].cantidad);
+                }else{
+                    var cantidadTotalProducto = rows[0].cantidad - cantidad;
+                    var statusProducto = cantidadTotalProducto == 0 ? 0:1;
+                    mysqlConnection.query('UPDATE producto SET cantidad = ?, estatus = ? WHERE idProducto = ?;', [cantidadTotalProducto, statusProducto, idProducto], (err, rows)=>{
+                        if(!err){
+                            if(rows.affectedRows){
+                                var cantidadTotalCarrito = cantidadActual + cantidad;
+                                mysqlConnection.query('UPDATE carrito SET  cantidad = ?, total = ? WHERE idCarrito = ?;', [cantidadTotalCarrito, total, idCarrito], (err, rows)=>{
+                                    if(!err){
+                                        res.json(rows.affectedRows);
+                                    }else{
+                                        console.log(err);
+                                        res.json(err);
+                                    }
+                                })
+                            }
+                        }else{
+                            console.log(err);
+                            res.json(err);
+                        }
+                    })
+                }
+            }else{
+                var cantidadTotalProducto = rows[0].cantidad + cantidad;
+                var statusProducto = cantidadTotalProducto == 0 ? 0:1;
+                mysqlConnection.query('UPDATE producto SET cantidad = ?, estatus = ? WHERE idProducto = ?;', [cantidadTotalProducto, statusProducto, idProducto], (err, rows)=>{
+                    if(!err){
+                        if(rows.affectedRows){
+                            var cantidadTotalCarrito = cantidadActual - cantidad;
+                            mysqlConnection.query('UPDATE carrito SET  cantidad = ?, total = ? WHERE idCarrito = ?;', [cantidadTotalCarrito, total, idCarrito], (err, rows)=>{
+                                if(!err){
+                                    res.json(rows.affectedRows);
+                                }else{
+                                    console.log(err);
+                                    res.json(err);
+                                }
+                            })
+                        }
+                    }else{
+                        console.log(err);
+                        res.json(err);
+                    }
+                })
+            }
+        }else{
+            console.log(err);
+            res.json(err);
+        }
+    })
+});
 
 module.exports = router;

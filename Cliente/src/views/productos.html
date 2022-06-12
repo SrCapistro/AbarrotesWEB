@@ -44,14 +44,38 @@
     <br>
     <div class="container">
        
-        <!-- Se muestra mensaje de error -->
-        <div id="mosntrarMensaje">
-
+        <div class="row mt-1">
+          <div class="input-group mb-3">
+              <select class="form-select form-select-sm me-2" id="selectorcategoria" onchange="mostrarProductoCategoria(this.value)">
+              </select>
+              <select class="form-select form-select-sm me-2" id="selectorprecio" onchange="ordenarPorPrecio(this.value)">
+                <option value="-1" hidden>Precio</option>
+                <option value="1">Más Alto</option>
+                <option value="0">Más Bajo</option>
+              </select>
+              <select class="form-select form-select-sm me-2" id="selectorcantidad" onchange="ordenarPorCantidad(this.value)">
+                <option value="-1" hidden>Stock</option>
+                <option value="1">Stock Alto</option>
+                <option value="0">Stock Bajo</option>
+              </select>
+              <select class="form-select form-select-sm me-2" id="selectorestatus" onchange="ordenarPorEstatus(this.value)">
+                <option value="-1" hidden>Estatus</option>
+                <option value="1">Disponible</option>
+                <option value="0">Agotado</option>
+              </select>
+              <input id="txtBuscarProducto" class="form-control" oninput="buscadorVacio()" type="search" placeholder="Desea buscar ...">
+              <button class="btn btn-outline-success btn-sm" type="button" onclick="buscarProducto()">Buscar</button>
+          </div>
         </div>
-
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button id="btnRegistrarNuevoProducto" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#nuevoProducto" onclick="resetearModal()"> Producto Nuevo </button>
+          <button id="btnRegistrarNuevoProducto" type="button" class="ms-3 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#nuevoProducto" onclick="resetearModal()"> Producto Nuevo </button>
         </div>
+        
+        <!-- Se muestra mensaje de error -->
+        <div class="mb-3" id="mosntrarMensaje">
+        </div>
+
+        <hr>
 
         <table class="table" id="tablaProductos">
             <thead>
@@ -93,12 +117,18 @@
                     <img id="imageProductoVista" class="visually-hidden" style="width: 150px;" alt="Imagen No Encontrada">
                   </div>
                 </div>
-                
-                <div class="mb-3">
+
+                <div class="mb-1">
                   <input class="form-control form-control-sm" id="txtImagenProducto" type="file" accept="image/*" onchange="visualizarImagen()">
                 </div>
 
-                <div class="mb-3">
+                <div class="alert alert-info" style="max-height:min-content; padding:0px; margin: 0px;" role="alert">
+                  <span style="font-size:smaller;">
+                    Las imagenes deben tener una dimensión de 600px * 400px. 
+                  </span>
+                </div>
+
+                <div class="my-3">
                   <label for="txtProducto" class="form-label">Producto</label>
                   <input type="text" class="form-control form-control-sm" id="txtProducto">
                 </div>
