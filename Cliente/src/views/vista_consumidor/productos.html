@@ -84,7 +84,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form name="formularioRegistrarReporte">
+            <form name="formularioRegistrarReporte" onsubmit="return registrarReporte(event)">
 
                 <div class="mb-3 visually-hidden">
                     <input type="number" class="form-control form-control-sm" id="txtIdReporte">
@@ -92,12 +92,12 @@
                 
                 <div class="mb-3">
                   <label for="txtAsunto" class="form-label">Asunto</label>
-                  <input type="text" class="form-control form-control-sm" id="txtAsunto">
+                  <input type="text" class="form-control form-control-sm" id="txtAsunto" required>
                 </div>
 
                 <div class="mb-3">
                   <label for="txtComentarios" class="form-label">Comentarios</label>
-                  <textarea class="form-control" id="txtComentarios" rows="5"></textarea>
+                  <textarea class="form-control" id="txtComentarios" rows="5" required></textarea>
                 </div>
 
                 <div class="mb-3">
@@ -111,12 +111,12 @@
                 </div>
                 
                 <div class="mb-3">
-                  <input class="form-control form-control-sm" id="txtImagenReporte" type="file" accept="image/*" onchange="visualizarImagenReporte()">
+                  <input class="form-control form-control-sm" id="txtImagenReporte" type="file" accept="image/*" required onchange="visualizarImagenReporte()">
                 </div>
 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end"> 
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button id="btnRegistraReporte" type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="registrarReporte()">Reportar</button>
+                    <button type="button" id="btnCancelarReporte" class="btn btn-secondary mt-2" data-bs-dismiss="modal">Cancelar</button>
+                    <input type="submit"  value="Registrar Reporte"class="btn btn-success mt-2" />
                     
                 </div>
             </form>

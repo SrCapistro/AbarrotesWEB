@@ -32,11 +32,14 @@ function registrarReporte() {
             }
 
             restablecerModal();
+            let botonClic = document.getElementById("btnCancelarReporte");
+            botonClic.click();
 
         }
     }
 
     request.send(reporte);
+    return false;
 }
 
 function restablecerModal(){
