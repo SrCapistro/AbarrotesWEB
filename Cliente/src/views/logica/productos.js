@@ -1,7 +1,10 @@
+var URL_HOST = "https://9f0f-2806-2f0-7080-c9c8-c1b4-9c34-e39b-24ff.ngrok.io/";
+// var URL_HOST = "http://localhost:4000/";
+
 var usuario;
 var listaProductos = "";
 var listaProductosAuxiliar = ""; 
-var URL_HOST = "https://9f0f-2806-2f0-7080-c9c8-c1b4-9c34-e39b-24ff.ngrok.io/";
+
 function validarUsuario() {
 
     let miURL = document.location.href;
@@ -209,34 +212,58 @@ function registrarProducto() {
 }
 
 function eliminarProducto(idProducto) {
+
+    document.getElementById("confirmacionBody").innerHTML = 'Esta apunto de eliminar un producto de la lista. <br>' +
+                                                            '<strong> ¿Esta seguro de eliminarlo?</strong>';
+    document.getElementById("btnEliminarProducto").innerHTML = 'Eliminar';
+
+    var btnSolicitarConfirmacion = document.getElementById("btnSolicitarConfirmacion");
+    btnSolicitarConfirmacion.click();
     
-    var request = new XMLHttpRequest();
+    var btnEliminarProducto = document.getElementById("btnEliminarProducto");
 
-    request.open('DELETE', URL_HOST+"eliminar/"+idProducto, true);
+    var contador = 0;
 
-    request.onload = function(){
-        if (request.status >= 200 && request.status < 300) {
-            
-            let mostrarMensaje = document.getElementById("mosntrarMensaje");
+    btnEliminarProducto.addEventListener("click", function () {
+        
+        if(contador == 0){
+        
+        var request = new XMLHttpRequest();
 
-            if(this.response == 1){
+        request.open('DELETE', URL_HOST+"eliminar/"+idProducto, true);
+
+        request.onload = function(){
+            if (request.status >= 200 && request.status < 300) {
                 
-                mostrarMensaje.innerHTML =  '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
-                                                '<strong id="mensajeAlerta"> Se elimino el Producto</strong>' +
-                                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                                            '</div>';
-                cargarProductos();
+                let mostrarMensaje = document.getElementById("mosntrarMensaje");
 
-            }else{
-                mostrarMensaje.innerHTML =  '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-                                                '<strong id="mensajeAlerta"> No se pudo eliminar el producto</strong>' +
-                                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                                            '</div>';
+                if(this.response == 1){
+                    
+                    mostrarMensaje.innerHTML =  '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                                    '<strong id="mensajeAlerta"> Se elimino el Producto</strong>' +
+                                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                                '</div>';
+                    cargarProductos();
+
+                }else{
+                    mostrarMensaje.innerHTML =  '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                                    '<strong id="mensajeAlerta"> No se pudo eliminar el producto</strong>' +
+                                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                                '</div>';
+                }
             }
         }
-    }
 
-    request.send();
+        request.send();
+
+        var btnCerrarModalConfirmacion = document.getElementById("btnCerrarModalConfirmacion");
+        btnCerrarModalConfirmacion.click();
+        }
+        ++contador;
+    });
+
+
+    
 }
 
 function modificarProducto(idProducto) {
@@ -282,57 +309,79 @@ function modificarProducto(idProducto) {
 
 function guardarProductoModificado() {
 
-    let formularioIniciarSesion = document.forms.formularioRegistrarProducto;
-    
-    let txtIdProducto = formularioIniciarSesion.txtIdProducto.value;
-    let imageProductoVista = formularioIniciarSesion.txtImagenProducto.files[0];
-    let txtProducto = formularioIniciarSesion.txtProducto.value;
-    let txtPrecio = formularioIniciarSesion.txtPrecio.value;
-    let txtCantidad = formularioIniciarSesion.txtCantidad.value;
-    let selectCategoria = formularioIniciarSesion.selectCategoria.value;
+    document.getElementById("confirmacionBody").innerHTML = 'Esta apunto de modificar un producto de la lista. <br>' +
+                                                            '<strong> ¿Esta seguro de modificarlo?</strong>';
+    document.getElementById("btnEliminarProducto").innerHTML = 'Modificar';
 
-    var producto = new FormData();
+     var btnSolicitarConfirmacion = document.querySelector("#btnSolicitarConfirmacion");
+     btnSolicitarConfirmacion.click();
 
-    producto.append("idProducto", txtIdProducto);
-    producto.append("nombre", txtProducto);
-    producto.append("precio", txtPrecio);
-    producto.append("cantidad", txtCantidad);
-    producto.append("idCategoria", selectCategoria);
-    producto.append("estatus", txtCantidad == "0" ? 0 : 1);
-    producto.append("imagen", imageProductoVista);
+    var contador = 0;
+  
+    var btnEliminarProducto = document.getElementById("btnEliminarProducto");
 
-    var request = new XMLHttpRequest();
+    btnEliminarProducto.addEventListener("click", function () {
 
-    request.open('PUT', URL_HOST+"actualizar", true);
+        if(contador == 0){
 
-    request.onload = function(){
-        if (request.status >= 200 && request.status < 300) {
-            
-            let mostrarMensaje = document.getElementById("mosntrarMensaje");
+        let formularioIniciarSesion = document.forms.formularioRegistrarProducto;
+        
+        let txtIdProducto = formularioIniciarSesion.txtIdProducto.value;
+        let imageProductoVista = formularioIniciarSesion.txtImagenProducto.files[0];
+        let txtProducto = formularioIniciarSesion.txtProducto.value;
+        let txtPrecio = formularioIniciarSesion.txtPrecio.value;
+        let txtCantidad = formularioIniciarSesion.txtCantidad.value;
+        let selectCategoria = formularioIniciarSesion.selectCategoria.value;
 
-            if(this.response == 1){
+        var producto = new FormData();
 
+        producto.append("idProducto", txtIdProducto);
+        producto.append("nombre", txtProducto);
+        producto.append("precio", txtPrecio);
+        producto.append("cantidad", txtCantidad);
+        producto.append("idCategoria", selectCategoria);
+        producto.append("estatus", txtCantidad == "0" ? 0 : 1);
+        producto.append("imagen", imageProductoVista);
+
+        var request = new XMLHttpRequest();
+
+        request.open('PUT', URL_HOST+"actualizar", true);
+
+        request.onload = function(){
+            if (request.status >= 200 && request.status < 300) {
+                    
+                let mostrarMensaje = document.getElementById("mosntrarMensaje");
+
+                if(this.response == 1){
+
+                        
+                    mostrarMensaje.innerHTML =  '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                                        '<strong id="mensajeAlerta"> Se modifico el Producto</strong>' +
+                                                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                                    '</div>';
+                        
+                        resetearModal();
+                        cargarProductos();
+
+                    }else{
+                        mostrarMensaje.innerHTML =  '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                                        '<strong id="mensajeAlerta"> No se pudo modificar el producto</strong>' +
+                                                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                                    '</div>';
+                    }
+                }
                 
-                mostrarMensaje.innerHTML =  '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
-                                                '<strong id="mensajeAlerta"> Se modifico el Producto</strong>' +
-                                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                                            '</div>';
-                
-                resetearModal();
-
-                cargarProductos();
-
-            }else{
-                mostrarMensaje.innerHTML =  '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-                                                '<strong id="mensajeAlerta"> No se pudo modificar el producto</strong>' +
-                                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                                            '</div>';
-            }
         }
-    }
+        request.send(producto);
 
-    request.send(producto);
+        var btnCerrarModalConfirmacion = document.getElementById("btnCerrarModalConfirmacion");
+                btnCerrarModalConfirmacion.click();
 
+        var btnCancelar = document.getElementById("btnCancelar");
+        btnCancelar.click();
+        }
+        ++ contador;
+    });
 }
 
 function resetearModal() {

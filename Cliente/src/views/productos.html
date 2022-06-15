@@ -155,7 +155,7 @@
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end"> 
                     <button type="button" id="btnCancelar" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetearModal()">Cancelar</button>
                     <input type="submit"  id="btnRegistraProducto" value="Registrar"class="btn btn-success mt-2" />
-                    <button id="btnModificarProducto" type="button" class="btn btn-primary visually-hidden" data-bs-dismiss="modal" onclick="guardarProductoModificado()">Actualizar</button>
+                    <button id="btnModificarProducto" data-bs-target="#confirmacion" type="button" class="btn btn-primary visually-hidden" onclick="guardarProductoModificado()">Actualizar</button>
                     
                 </div>
             </form>
@@ -166,24 +166,22 @@
 
   <!-- Solicitar confirmacion para eliminar o modificar -->
   <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmacion">
+<button id="btnSolicitarConfirmacion" type="button" class="btn btn-primary visually-hidden" data-bs-toggle="modal" data-bs-target="#confirmacion">
   confirmacion
 </button>
-
 <!-- Modal -->
 <div class="modal fade" id="confirmacion" tabindex="-1" aria-labelledby="confirmacionLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog alert alert-danger">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="confirmacionLabel">-Confirmacion</h5>
+        <h5 class="modal-title" id="confirmacionLabel">Confirmar acción</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        ...
+      <div id="confirmacionBody" class="modal-body text-center">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button id="btnCerrarModalConfirmacion" type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+        <button id="btnEliminarProducto" type="button" class="btn btn-primary btn-sm"></button>
       </div>
     </div>
   </div>

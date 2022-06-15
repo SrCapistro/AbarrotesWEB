@@ -2,6 +2,7 @@ var usuario;
 var carritoUsuarioAuxiliar;
 let carritoUsuario;
 var URL_HOST = "https://9f0f-2806-2f0-7080-c9c8-c1b4-9c34-e39b-24ff.ngrok.io/";
+// var URL_HOST = "http://localhost:4000/"
 
 function validarUsuario() {
 
@@ -123,6 +124,17 @@ function cargarTablaProductos(carritoEntrada) {
 
 function eliminarProducto(idCarrito) {
 
+    document.getElementById("confirmacionBody").innerHTML = 'Esta apunto de eliminar un producto del  carrito. <br>' +
+                                                            '<strong> ¿Esta seguro de eliminarlo?</strong>';
+    document.getElementById("btnEliminarProducto").innerHTML = 'Eliminar';
+
+    var btnSolicitarConfirmacion = document.getElementById("btnSolicitarConfirmacion");
+    btnSolicitarConfirmacion.click();
+    
+    var btnEliminarProducto = document.getElementById("btnEliminarProducto");
+
+    btnEliminarProducto.addEventListener("click", function () {
+
     var request = new XMLHttpRequest();
 
     request.open('DELETE', URL_HOST+"eliminarCarrito/"+idCarrito, true);
@@ -149,7 +161,10 @@ function eliminarProducto(idCarrito) {
         }
     }
 
-    request.send();
+        request.send();
+        var btnCerrarModalConfirmacion = document.getElementById("btnCerrarModalConfirmacion");
+        btnCerrarModalConfirmacion.click();
+    });
 }
 
 function actualizarTotalProducto(input) {
@@ -195,7 +210,7 @@ function actualizarCarritoProducto(datos) {
 
     request.setRequestHeader('Content-Type', 'application/json');
 
-    let mostrarMensaje = document.getElementById("mosntrarMensaje");
+    let mostrarMensaje = document.getElementById("mostrarMensaje");
     let btnRealizarPago = document.getElementById("realizarPago");
 
     request.onload = function(){

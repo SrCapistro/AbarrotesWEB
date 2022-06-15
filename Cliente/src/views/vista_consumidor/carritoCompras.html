@@ -49,7 +49,7 @@
     <div class="container">
         <h2 class="mt-5">Carrito de Compras</h2>
         <!-- Se muestra mensaje de error -->
-        <div id="mosntrarMensaje">
+        <div id="mostrarMensaje">
 
         </div>
         <div class="table-responsive mt-5">
@@ -141,6 +141,30 @@
       </div>
     </div>
   </div>
+
+  <!-- Solicitar confirmacion para eliminar o modificar -->
+  <!-- Button trigger modal -->
+<button id="btnSolicitarConfirmacion" type="button" class="btn btn-primary visually-hidden" data-bs-toggle="modal" data-bs-target="#confirmacion">
+  confirmacion
+</button>
+<!-- Modal -->
+<div class="modal fade" id="confirmacion" tabindex="-1" aria-labelledby="confirmacionLabel" aria-hidden="true">
+  <div class="modal-dialog alert alert-danger">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmacionLabel">Confirmar acción</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div id="confirmacionBody" class="modal-body text-center">
+      </div>
+      <div class="modal-footer">
+        <button id="btnCerrarModalConfirmacion" type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+        <button id="btnEliminarProducto" type="button" class="btn btn-primary btn-sm"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
   <script type="text/javascript" src="../logica/reporte.js"></script>
   <script type="text/javascript" src="../logica/carritoCompras.js"></script>
 </body>
