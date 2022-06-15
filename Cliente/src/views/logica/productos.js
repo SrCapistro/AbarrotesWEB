@@ -192,6 +192,8 @@ function registrarProducto() {
                                             '</div>';
                 resetearModal();
                 cargarProductos();
+                let botonClic = document.getElementById("btnCancelar");
+                botonClic.click();
 
             }else{
                 mostrarMensaje.innerHTML =  '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
@@ -203,6 +205,7 @@ function registrarProducto() {
     }
 
     request.send(producto);
+    return false;
 }
 
 function eliminarProducto(idProducto) {
