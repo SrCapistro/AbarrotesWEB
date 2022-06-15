@@ -31,11 +31,11 @@
                 <form name="formularioIniciarSesion" onsubmit="return iniciarSesion()">
                     <div class="-mb-4">
                         <label for="txtCorreo" class="form-label">Correo electrónico</label>
-                        <input type="email" class="form-control" name="txtCorreo" id="txtCorreo">
+                        <input type="text" class="form-control" name="txtCorreo" id="txtCorreo" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}" required>
                     </div>
                     <div class="-mb-4">
                         <label for="txtPassword" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" name="txtPassword" id="txtPassword">
+                        <input type="password" class="form-control" name="txtPassword" id="txtPassword" required>
                     </div>
 
                     <br>
