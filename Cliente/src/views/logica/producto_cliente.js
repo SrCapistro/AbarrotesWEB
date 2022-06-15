@@ -1,5 +1,5 @@
-var URL_HOST = "https://9f0f-2806-2f0-7080-c9c8-c1b4-9c34-e39b-24ff.ngrok.io/";
-// var URL_HOST = "http://localhost:4000/"
+//var URL_HOST = "https://9f0f-2806-2f0-7080-c9c8-c1b4-9c34-e39b-24ff.ngrok.io/"
+var URL_HOST = "http://localhost:4000/";
 
 var urlParametro = window.location.search;
 var parametro = new URLSearchParams(urlParametro);
@@ -9,6 +9,7 @@ var idProducto = parametro.get('idProducto');
 
 var usuario = "";
 var precioProducto = "";
+var cantidadExistencia;
 
 function validarUsuario() {
 
@@ -47,11 +48,11 @@ function cargarProducto(){
     if (this.readyState == 4 && this.status == 200) {
         var data = JSON.parse(this.response);
         precioProducto = data[0].precio;
+        cantidadExistencia = data[0].cantidad;
         mostrarProducto(data);
     }
     };
     xhttp.open("GET", URL_HOST+"productos/"+idProducto, true);
-    // xhttp.open("GET", URLHost+"productos/"+idProducto, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
 }
@@ -167,44 +168,48 @@ function añadirCarrito(){
     let cantidad = document.getElementById("txt_cantidad").value;
     try {
         if(cantidad){
-            let agregarCarrito = {
-                "idUsuario": idUsuario,
-                "idProducto": idProducto,
-                "cantidad": cantidad,
-                "total": precioProducto * cantidad
-            }
-    
-            var request = new XMLHttpRequest();
-
-            request.open('POST', URL_HOST+'agregarCarrito', true);
-            // request.open('POST', URLHost+'agregarCarrito', true);
-            request.setRequestHeader('Content-Type', 'application/json');
-            request.onload = function(){
-                
-                if(this.response == 1){
-                    let restarCantidad = {
-                        "cantidad": cantidad,
-                        "idProducto": idProducto
-                    }
-                    var request2 = new XMLHttpRequest();
-                    request2.open('PUT', URL_HOST+'restarProductos', true);
-                    // request2.open('PUT', URLHost+'restarProductos', true);
-                    request2.setRequestHeader('Content-Type', 'application/json');
-                    request2.onload = function(){
-                        if(this.response == 1){
-                            alert("Producto agregado exitosamente");
-                            window.open('../vista_consumidor/carritoCompras.html?idUsuario='+idUsuario, '_self');
-                        }else{
-                            alert("El producto se agregó al carrito pero no se actualizó el total de productos restantes");
-                        }
-                    }
-                    request2.send(JSON.stringify(restarCantidad));
-                }else{
-                    alert("No fue posible realizar el registro del producto al carrito");
+            if(cantidadExistencia > cantidad){
+                let agregarCarrito = {
+                    "idUsuario": idUsuario,
+                    "idProducto": idProducto,
+                    "cantidad": cantidad,
+                    "total": precioProducto * cantidad
                 }
-               
+        
+                var request = new XMLHttpRequest();
+    
+                request.open('POST', URL_HOST+'agregarCarrito', true);
+                request.setRequestHeader('Content-Type', 'application/json');
+                request.onload = function(){
+                    
+                    if(this.response == 1){
+                        let restarCantidad = {
+                            "cantidad": cantidad,
+                            "idProducto": idProducto
+                        }
+                        var request2 = new XMLHttpRequest();
+                        request2.open('PUT', URL_HOST+'restarProductos', true);
+                        // request2.open('PUT', URLHost+'restarProductos', true);
+                        request2.setRequestHeader('Content-Type', 'application/json');
+                        request2.onload = function(){
+                            if(this.response == 1){
+                                alert("Producto agregado exitosamente");
+                                window.open('../vista_consumidor/carritoCompras.html?idUsuario='+idUsuario, '_self');
+                            }else{
+                                alert("El producto se agregó al carrito pero no se actualizó el total de productos restantes");
+                            }
+                        }
+                        request2.send(JSON.stringify(restarCantidad));
+                    }else{
+                        alert("No fue posible realizar el registro del producto al carrito");
+                    }
+                   
+                }
+                request.send(JSON.stringify(agregarCarrito));
+            }else{
+                alert("Actualmente solo contamos con "+cantidadExistencia+" items para este producto");
             }
-            request.send(JSON.stringify(agregarCarrito));
+            
         }else{
             document.getElementById("txt_cantidad").style.borderColor = "red";
         }
