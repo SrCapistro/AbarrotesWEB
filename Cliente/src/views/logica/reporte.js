@@ -1,4 +1,4 @@
-
+var URL_HOST = "https://9f0f-2806-2f0-7080-c9c8-c1b4-9c34-e39b-24ff.ngrok.io/"
 var params = window.location.search.substring(1);
 var idUsuario = localStorage.getItem('idUsuario');
 
@@ -18,7 +18,7 @@ function registrarReporte() {
 
     var request = new XMLHttpRequest();
 
-    request.open('POST', "http://localhost:4000/reportes/registrar", true);
+    request.open('POST', URL_HOST+"reportes/registrar", true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {

@@ -1,3 +1,5 @@
+var URL_HOST = "https://9f0f-2806-2f0-7080-c9c8-c1b4-9c34-e39b-24ff.ngrok.io/"
+
 function iniciarSesion(params) {
     
     let formularioIniciarSesion = document.forms.formularioIniciarSesion;
@@ -9,7 +11,7 @@ function iniciarSesion(params) {
     
     var request = new XMLHttpRequest();
 
-    request.open('GET', "http://localhost:4000/usuario/iniciarSesion/" + correo+ "/" + contrasenia, true);
+    request.open('GET', URL_HOST+"usuario/iniciarSesion/" + correo+ "/" + contrasenia, true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {

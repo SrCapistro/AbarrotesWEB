@@ -1,7 +1,7 @@
 var usuario;
 var listaProductos = "";
 var listaProductosAuxiliar = ""; 
-
+var URL_HOST = "https://9f0f-2806-2f0-7080-c9c8-c1b4-9c34-e39b-24ff.ngrok.io/";
 function validarUsuario() {
 
     let miURL = document.location.href;
@@ -38,7 +38,7 @@ function cargarProductos() {
 
     var request = new XMLHttpRequest();
 
-    request.open('GET', "http://localhost:4000/productosCategorias", true);
+    request.open('GET', URL_HOST+"productosCategorias", true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
@@ -110,7 +110,7 @@ function cargarTablaProductos(productosLista) {
                         let inputImg = document.createElement("img");
                         inputImg.setAttribute("style","width: 80px;");
                         inputImg.setAttribute("alt","imgproducto");
-                        inputImg.setAttribute("src","http://localhost:4000/imagenesProductos/"+productosLista[key].ruta);
+                        inputImg.setAttribute("src",URL_HOST+"imagenesProductos/"+productosLista[key].ruta);
 
                         let contenedorIMG = document.createElement("div");
                         contenedorIMG.setAttribute("class","text-center");
@@ -131,7 +131,7 @@ function cargarComboCategoria() {
 
     var request = new XMLHttpRequest();
 
-    request.open('GET', "http://localhost:4000/categorias/obtenerCategorias", true);
+    request.open('GET', URL_HOST+"categorias/obtenerCategorias", true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
@@ -177,7 +177,7 @@ function registrarProducto() {
 
     var request = new XMLHttpRequest();
 
-    request.open('POST', "http://localhost:4000/registrar", true);
+    request.open('POST', URL_HOST+"registrar", true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
@@ -209,7 +209,7 @@ function eliminarProducto(idProducto) {
     
     var request = new XMLHttpRequest();
 
-    request.open('DELETE', "http://localhost:4000/eliminar/"+idProducto, true);
+    request.open('DELETE', URL_HOST+"eliminar/"+idProducto, true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
@@ -262,7 +262,7 @@ function modificarProducto(idProducto) {
                     const imageProductoVista = document.getElementById("imageProductoVista");
                     imageProductoVista.setAttribute("class","img-fluid");
 
-                    imageProductoVista.src = "http://localhost:4000/imagenesProductos/"+listaProductos[key].ruta;
+                    imageProductoVista.src = URL_HOST+"imagenesProductos/"+listaProductos[key].ruta;
                 }
 
                 formularioIniciarSesion.txtIdProducto.value = listaProductos[key].idProducto;
@@ -300,7 +300,7 @@ function guardarProductoModificado() {
 
     var request = new XMLHttpRequest();
 
-    request.open('PUT', "http://localhost:4000/actualizar", true);
+    request.open('PUT', URL_HOST+"actualizar", true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
@@ -530,6 +530,13 @@ function buscadorVacio() {
     if (enterBuscador.value.length == 0) {
         buscarProducto();
     }
+}
+
+function cerrarSesion(){
+    localStorage.removeItem(usuario.idUsuario);
+    setTimeout(() => {
+        window.open('index.html','_self');
+    }, 1000);
 }
 
 window.onload = function(){

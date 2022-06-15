@@ -1,4 +1,4 @@
-const URLHost = "http:/localhost:4000/";
+var URL_HOST = "https://9f0f-2806-2f0-7080-c9c8-c1b4-9c34-e39b-24ff.ngrok.io/";
 
 var urlParametro = window.location.search;
 var parametro = new URLSearchParams(urlParametro);
@@ -49,7 +49,7 @@ function cargarProducto(){
         mostrarProducto(data);
     }
     };
-    xhttp.open("GET", "http://localhost:4000/productos/"+idProducto, true);
+    xhttp.open("GET", URL_HOST+"productos/"+idProducto, true);
     // xhttp.open("GET", URLHost+"productos/"+idProducto, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
@@ -59,7 +59,7 @@ function mostrarProducto(data){
 
     let img = data[0].ruta == null ? "sinImagen.svg":data[0].ruta
     
-    document.getElementById("imgPrducto").src = "http://localhost:4000/imagenesProductos/" + img; 
+    document.getElementById("imgPrducto").src = URL_HOST+"imagenesProductos/" + img; 
     document.getElementById("tituloproducto").innerHTML = data[0].nombre;
     document.getElementById("costoproducto").innerHTML ="Precio: $" + data[0].precio;
     document.getElementById("categoria").innerHTML = data[0].nombreCatego;
@@ -71,7 +71,7 @@ function mostrarProducto(data){
 function cargarProductoCarrusel(idCategoria, idProductoExcluir){
     var request = new XMLHttpRequest();
 
-    request.open('GET', "http://localhost:4000/productos/categoriaImagen/" + idCategoria, true);
+    request.open('GET', URL_HOST+"productos/categoriaImagen/" + idCategoria, true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
@@ -96,7 +96,7 @@ function cargarProductoCarrusel(idCategoria, idProductoExcluir){
                                                                     <div class="card mb-3" style="max-width: 540px; border-width: 0px;">
                                                                         <div class="row g-0 align-items-center">
                                                                             <div class="col-md-4 align-self-center">
-                                                                            <img src="http://localhost:4000/imagenesProductos/${productos[key].ruta}" class="img-fluid rounded-start" alt="imgProducto">
+                                                                            <img src="${URL_HOST}imagenesProductos/${productos[key].ruta}" class="img-fluid rounded-start" alt="imgProducto">
                                                                             </div>
                                                                             <div class="col-md-8">
                                                                                 <div class="card-body">
@@ -117,7 +117,7 @@ function cargarProductoCarrusel(idCategoria, idProductoExcluir){
                                                                     <div class="card mb-3" style="max-width: 540px; border-width: 0px;">
                                                                         <div class="row g-0 align-items-center">
                                                                             <div class="col-md-4 align-self-center">
-                                                                            <img src="http://localhost:4000/imagenesProductos/${productos[key].ruta}" class="img-fluid rounded-start" alt="imgProducto">
+                                                                            <img src="${URL_HOST}imagenesProductos/${productos[key].ruta}" class="img-fluid rounded-start" alt="imgProducto">
                                                                             </div>
                                                                             <div class="col-md-8">
                                                                                 <div class="card-body">
@@ -175,7 +175,7 @@ function añadirCarrito(){
     
             var request = new XMLHttpRequest();
 
-            request.open('POST', 'http://localhost:4000/agregarCarrito', true);
+            request.open('POST', URL_HOST+'agregarCarrito', true);
             // request.open('POST', URLHost+'agregarCarrito', true);
             request.setRequestHeader('Content-Type', 'application/json');
             request.onload = function(){
@@ -186,7 +186,7 @@ function añadirCarrito(){
                         "idProducto": idProducto
                     }
                     var request2 = new XMLHttpRequest();
-                    request2.open('PUT', 'http://localhost:4000/restarProductos', true);
+                    request2.open('PUT', URL_HOST+'restarProductos', true);
                     // request2.open('PUT', URLHost+'restarProductos', true);
                     request2.setRequestHeader('Content-Type', 'application/json');
                     request2.onload = function(){
@@ -213,6 +213,12 @@ function añadirCarrito(){
     
 }
 
+function cerrarSesion(){
+    localStorage.removeItem(usuario.idUsuario);
+    setTimeout(() => {
+        window.open('../index.html','_self');
+    }, 1000);
+}
 
 window.onload = function(){
     cargarProducto();

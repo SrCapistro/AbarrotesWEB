@@ -1,4 +1,4 @@
-const URL = "http:/localhost:4000/";
+var URL_HOST = "https://9f0f-2806-2f0-7080-c9c8-c1b4-9c34-e39b-24ff.ngrok.io/";
 
 
 function solicitarCodigo(){
@@ -18,7 +18,7 @@ function solicitarCodigo(){
             }
         }
         };
-        xhttp.open("POST", URL+"usuario/recovery", true);
+        xhttp.open("POST", URL_HOST+"usuario/recovery", true);
         xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.send(JSON.stringify(body));
     } catch (error) {
