@@ -1,6 +1,7 @@
 var usuario; 
 var carritoUsuarioAuxiliar;
 let carritoUsuario;
+var URL_HOST = "https://9f0f-2806-2f0-7080-c9c8-c1b4-9c34-e39b-24ff.ngrok.io/";
 
 function validarUsuario() {
 
@@ -40,7 +41,7 @@ function cargarProductos() {
 
     var request = new XMLHttpRequest();
 
-    request.open('GET', "http://localhost:4000/obtenerCarrito/" + usuario.idUsuario, true);
+    request.open('GET', URL_HOST+"obtenerCarrito/" + usuario.idUsuario, true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
@@ -124,7 +125,7 @@ function eliminarProducto(idCarrito) {
 
     var request = new XMLHttpRequest();
 
-    request.open('DELETE', "http://localhost:4000/eliminarCarrito/"+idCarrito, true);
+    request.open('DELETE', URL_HOST+"eliminarCarrito/"+idCarrito, true);
 
     request.onload = function(){
         if (request.status >= 200 && request.status < 300) {
@@ -190,7 +191,7 @@ function actualizarCarritoProducto(datos) {
 
     var request = new XMLHttpRequest();
 
-    request.open('PUT', 'http://localhost:4000/carrito/producto/actualizar', true);
+    request.open('PUT', URL_HOST+'carrito/producto/actualizar', true);
 
     request.setRequestHeader('Content-Type', 'application/json');
 
@@ -237,6 +238,13 @@ function calcularTotales(numeroColumna) {
             }
         }
     return total;
+}
+
+function cerrarSesion(){
+    localStorage.removeItem(usuario.idUsuario);
+    setTimeout(() => {
+        window.open('../index.html','_self');
+    }, 1000);
 }
 
 function seguirComprando() {

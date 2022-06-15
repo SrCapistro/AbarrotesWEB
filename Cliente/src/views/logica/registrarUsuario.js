@@ -1,3 +1,5 @@
+var URL_HOST = "https://9f0f-2806-2f0-7080-c9c8-c1b4-9c34-e39b-24ff.ngrok.io/"
+
 function registrar(){
     
     let nombreCompleto = document.getElementById("txt_nombre").value;
@@ -16,7 +18,7 @@ function registrar(){
         }
         
         var request = new XMLHttpRequest();
-        request.open('POST', 'http://localhost:4000/usuario/registrarUsuario', true);
+        request.open('POST', URL_HOST+'usuario/registrarUsuario', true);
         request.setRequestHeader('Content-Type', 'application/json');
         request.onload = function(){
             if(this.response == 1){

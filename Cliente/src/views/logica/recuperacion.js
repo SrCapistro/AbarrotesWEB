@@ -1,4 +1,4 @@
-const URL = "http:/localhost:4000/";
+var URL_HOST = "https://9f0f-2806-2f0-7080-c9c8-c1b4-9c34-e39b-24ff.ngrok.io/";
 
 
 
@@ -30,7 +30,7 @@ function registrarContraseña(correo, contra){
         }
         };
         console.log(body);
-        xhttp.open("PUT", URL+"usuario/cambiarpass", true);
+        xhttp.open("PUT", URL_HOST+"usuario/cambiarpass", true);
         xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.send(JSON.stringify(body));
     } catch (error) {

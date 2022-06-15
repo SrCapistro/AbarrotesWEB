@@ -1,4 +1,4 @@
-const URLHost = "http:/localhost:4000/";
+var URL_HOST = "https://9f0f-2806-2f0-7080-c9c8-c1b4-9c34-e39b-24ff.ngrok.io/";
 
 var usuario;
 var listaProductos = ""; 
@@ -51,7 +51,7 @@ function cargarProductos(){
     }
     };
     // xhttp.open("GET", URLHost+"productos", true);
-    xhttp.open("GET", "http://localhost:4000/productosCategorias", true);
+    xhttp.open("GET", URL_HOST+"productosCategorias", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
 }
@@ -62,7 +62,7 @@ function mostrarProductos(data){
         var card = `<div class="col">
                         <div class="card" style="min-height: 300px;">
                             <div class="text-center">
-                                <img src="http://localhost:4000/imagenesProductos/${data[i].ruta == null? "sinImagen.svg":data[i].ruta}" class="card-img-top " style="width:140px" alt="imgProducto"></img>
+                                <img src="${URL_HOST}imagenesProductos/${data[i].ruta == null? "sinImagen.svg":data[i].ruta}" class="card-img-top " style="width:140px; margin-top: 10px; border-radius: 20px;" alt="imgProducto"></img>
                             </div>
                             <div class="card-body">
                                 <h6 class="fw-bold">${data[i].nombre}</h6>
@@ -86,7 +86,8 @@ function cargarCategorias(){
     }
     };
     // xhttp.open("GET", URLHost+"obtenerCategorias", true);
-    xhttp.open("GET", "http://localhost:4000/categorias/obtenerCategorias", true);
+    //xhttp.open("GET", "http://localhost:4000/categorias/obtenerCategorias", true);
+    xhttp.open("GET", URL_HOST+"categorias/obtenerCategorias", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
 }
@@ -197,6 +198,14 @@ function buscadorVacio() {
         document.getElementById("selectorprecio").value = -1;
         document.getElementById("selectorcategoria").value = -1;
     }
+}
+
+
+function cerrarSesion(){
+    localStorage.removeItem(usuario.idUsuario);
+    setTimeout(() => {
+        window.open('../index.html','_self');
+    }, 1000);
 }
 
 window.onload = function(){
